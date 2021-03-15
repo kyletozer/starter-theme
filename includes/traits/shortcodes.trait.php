@@ -37,7 +37,7 @@ trait Custom_Shortcodes {
 		Timber::render( [ 'partial/services-table.twig' ], $context );
 	}
 
-  public function contact_info( $atts ) {
+  	public function contact_info( $atts ) {
 		$defaults = [
 			'wrapper' => '1',
 			'username' => false,
