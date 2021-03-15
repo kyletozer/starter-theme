@@ -305,7 +305,7 @@ class StarterSite extends Timber\Site {
 		} ) );
 
 		$twig->addFunction( new Twig_SimpleFunction( 'logo', function() {
-			?><div class="logo grow-on-hover transition-all-normal"><?php the_custom_logo(); ?></div><?php
+			?><div class="logo transition-all-normal"><?php the_custom_logo(); ?></div><?php
 		} ) );
 		
 		return $twig;
