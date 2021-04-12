@@ -321,9 +321,10 @@ class StarterSite_Dev extends StarterSite {
 		add_action( 'deactivated_plugin', function( $plugin ) { $this->update_plugin_meta_status( $plugin, 'inactive' ); } );
 
 		// check for existance of WP CLI
-		if ( ! shell_exec( 'wp --info' ) ) {
-			error_log( print_r( __FILE__ . ' Line ' . __LINE__ . ': WP CLI is not available in this environment.', true ) );
+		if ( shell_exec( 'wp --info' ) ) {
 			$this->wp_cli = true;
+		} else {
+			error_log( print_r( __FILE__ . ' Line ' . __LINE__ . ': WP CLI is not available in the current environment.', true ) );
 		}
 
 		parent::__construct();
@@ -350,7 +351,9 @@ class StarterSite_Dev extends StarterSite {
 
 		$plugin_data_filepath = get_home_path() . 'plugins-installed.json';
 		
-		if ( ! file_exists( $plugin_data_filepath ) || empty ( $status ) ) return;
+		if ( ! file_exists( $plugin_data_filepath ) ) {
+			$this->run_wp_plugin_list();
+		}
 
 		$plugin_slug = explode( '/', $plugin )[0];
 		$plugin_data = file_get_contents( $plugin_data_filepath );
