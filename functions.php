@@ -78,7 +78,6 @@ class StarterSite extends Timber\Site {
 
 		// wrap with checks/break into separate files
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
-		add_action( 'wp_head', array( $this, 'head_modifications' ) );
 		add_filter( 'wpcf7_form_response_output', array( $this, 'cf7_customizations' ), 10, 4 );
 		add_action( 'acf/init', array( $this, 'acf_global_options_page' ) );
 		add_filter( 'wpseo_metabox_prio', function() { return 'low'; } );
@@ -126,44 +125,6 @@ class StarterSite extends Timber\Site {
 			$attr['class'] .= ' img-fluid';
 		}
 		return $attr;
-	}
-
-	public function head_modifications() {
-		global $post;
-
-		$full_src_path = null;
-		$custom_header_data = get_custom_header();
-
-		if ( class_exists( 'ACF' ) ) {
-			$full_src_path = get_field( 'custom_header' )['ID'];
-		} else if ( property_exists( $custom_header_data, 'attachment_id' ) ) {
-			$full_src_path = $custom_header_data->attachment_id;
-		}
-
-		if ( ! $full_src_path ) return;
-
-		$full_src_path = get_attached_file( $full_src_path );
-		
-		$src_path = substr( $full_src_path, strpos( $full_src_path, '/wp-content' ) );
-
-		// style for header
-		?>
-		<style>
-			.logo {
-				max-width: <?php echo $this->logo_width; ?>px;
-				max-height: <?php echo $this->logo_height; ?>px;
-			}
-
-			.header-image {
-				background-image: url('<?php echo $src_path; ?>');
-				background-repeat: no-repeat;
-				background-position: center center;
-				background-size: cover;
-				width: 100%;
-				height: <?php echo $this->header_height; ?>px;
-			}
-		</style>
-		<?php
 	}
 
 	public function cf7_customizations( $output, $class, $content, $instance ) {
