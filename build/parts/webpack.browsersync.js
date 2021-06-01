@@ -5,7 +5,7 @@ module.exports = (browserSyncOptions = {}, pluginOptions = {}) => {
     open: false,
     host: 'localhost',
     proxy: {
-      target: 'http://localhost:8888',
+      target: 'http://localhost',
       proxyReq: [ proxyReq => proxyReq.setHeader('X-Development', '1') ]
     },
     reloadDebounce: 2000,
